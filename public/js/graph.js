@@ -40,6 +40,9 @@ function graphStuff(data) {
     title: 'Nukeydog\'s Rank',
     font: {
       size: 16
+    },
+    yaxis: {
+      autorange: 'reversed'
     }
   });
 }
