@@ -37,7 +37,7 @@ function graphStuff(data) {
     x,
     y,
   }], {
-    title: 'Nukeydog\'s Rank',
+    title: 'Nukeydog\'s Rank (wow!)',
     font: {
       size: 16
     },
