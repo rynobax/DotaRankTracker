@@ -7,13 +7,13 @@ admin.initializeApp({
   databaseURL: 'https://dotaranktracker.firebaseio.com'
 });
 
-exports.myHandler = (event, context, callback) => {
+exports.run = () => {
   const leaderboards = axios.create({
     baseURL: 'http://www.dota2.com/webapi/ILeaderboard/GetDivisionLeaderboard/v0001?division=americas',
     timeout: 1000,
     headers: {}
   });
-  leaderboards.get()
+  return leaderboards.get()
     .then(res => res.data)
     .then(getRank)
     .then(postRank);
@@ -21,8 +21,10 @@ exports.myHandler = (event, context, callback) => {
 
 function getRank({ leaderboard, time_posted }) {
   const possibilities = leaderboard
-    .map((data, i) => ({
-      ...data,
+    .map(({ time, name, team_id }, i) => ({
+      time,
+      name,
+      team_id,
       rank: i + 1,
     }))
     .filter(({ name, team_id }) => name === 'Nukeydog' && team_id === 1123638);
@@ -32,11 +34,12 @@ function getRank({ leaderboard, time_posted }) {
 }
 
 function postRank({ rank, time }) {
-  const db = admin.firestore();
-  const dataRef = db.collection('ranks');
+  const db = admin.database();
+  const dataRef = db.ref('ranks');
   const data = {
     time: new Date(time * 1000),
     rank,
   };
-  dataRef.doc(String(time)).set(data);
+  return dataRef.child(String(time)).set(data)
+    .then(() => rank);
 }

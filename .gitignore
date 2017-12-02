@@ -59,3 +59,4 @@ typings/
 
 credentials
 package-lock.json
+*.zip

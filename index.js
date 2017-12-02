@@ -1,2 +1,8 @@
 const dotaRank = require('./src/dotaRank');
-dotaRank.myHandler();
+exports.handler = (evt, ctx, cb) => {
+  ctx.callbackWaitsForEmptyEventLoop = false;
+  dotaRank
+    .run()
+    .then(rank => cb(null, 'Finished: ' + rank))
+    .catch(err => cb(err));
+}
