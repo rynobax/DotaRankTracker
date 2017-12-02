@@ -18,17 +18,20 @@ const gd = gd3.node();
 const db = firebase.database();
 
 db.ref('ranks')
-  .on('value')
-  .then(snap => snap.val())
-  .then(graphStuff);
+  .once('value')
+  .then(snap => {
+    graphStuff(snap.val());
+  });
 
 function graphStuff(data) {
+  console.log('data: ', data);
   const x = [];
   const y = [];
-  Object.values(data).forEach(e => {
-    x.push(e.time);
-    y.push(e.rank);
+  Object.keys(data).forEach(time => {
+    x.push(new Date(time * 1000));
+    y.push(data[time].rank);
   });
+  console.log('x: ', x);
   Plotly.plot(gd, [{
     type: 'scatter',
     x,
