@@ -42,7 +42,8 @@ function graphStuff(data) {
       size: 16
     },
     yaxis: {
-      autorange: 'reversed'
+      // autorange: 'reversed',
+      range: [1200, 0]
     }
   });
 }
