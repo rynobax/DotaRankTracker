@@ -43,7 +43,7 @@ function graphStuff(data) {
     },
     yaxis: {
       // autorange: 'reversed',
-      range: [1200, 0]
+      range: [1400, 0]
     }
   });
 }
