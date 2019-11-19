@@ -31,7 +31,7 @@ function makeTrace(name, data) {
     x.push(new Date(time * 1000));
     y.push(data[time].rank);
   });
-  return { type: "scatter", x, y };
+  return { type: "scatter", x, y, name };
 }
 
 function graphStuff({ ranks = [], support = [], core = [] }) {
