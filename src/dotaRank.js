@@ -10,12 +10,12 @@ admin.initializeApp({
 exports.run = () => {
   const core = axios.create({
     baseURL: 'http://www.dota2.com/webapi/ILeaderboard/GetDivisionLeaderboard/v0001?division=americas&leaderboard=1',
-    timeout: 1000,
+    timeout: 4000,
     headers: {}
   });
   const support = axios.create({
     baseURL: 'http://www.dota2.com/webapi/ILeaderboard/GetDivisionLeaderboard/v0001?division=americas&leaderboard=2',
-    timeout: 1000,
+    timeout: 4000,
     headers: {}
   });
   return Promise.all([
@@ -39,12 +39,12 @@ function getRank({ leaderboard, time_posted }) {
       rank: i + 1,
     }))
     .filter(({ name, team_id }) => name === 'Nukeydog' && team_id === 1123638);
-  console.log(possibilities);
   const me = possibilities[0];
   return { rank: me.rank, time: time_posted };
 }
 
 const postRank = (type) => ({ rank, time }) => {
+  if (!rank) return Promise.resolve():
   const db = admin.database();
   const dataRef = db.ref(type);
   const data = {
