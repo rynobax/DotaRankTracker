@@ -1,2 +1,2 @@
 # DotaRankTracker
-Tracks Dota2 leaderboard rakn
+Tracks Dota2 leaderboard rank
