@@ -32,12 +32,6 @@ exports.run = () => {
 
 function getRank({ leaderboard, time_posted }) {
   const possibilities = leaderboard
-    .map(({ time, name, team_id }, i) => ({
-      time,
-      name,
-      team_id,
-      rank: i + 1,
-    }))
     .filter(({ name, team_id }) => name === 'Nukeydog' && team_id === 1123638);
   const me = possibilities[0];
   return { rank: me.rank, time: time_posted };
