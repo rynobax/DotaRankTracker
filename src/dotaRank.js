@@ -1,10 +1,14 @@
 const admin = require('firebase-admin');
 const axios = require('axios');
 const serviceAccount = require('../credentials/credentials.json');
+const { FIREBASE_TOKEN } = require('./secret');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://dotaranktracker.firebaseio.com'
+  databaseURL: 'https://dotaranktracker.firebaseio.com',
+  databaseAuthVariableOverride: {
+    uid: FIREBASE_TOKEN,
+  },
 });
 
 exports.run = () => {
