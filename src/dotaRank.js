@@ -44,7 +44,7 @@ function getRank({ leaderboard, time_posted }) {
 }
 
 const postRank = (type) => ({ rank, time }) => {
-  if (!rank) return Promise.resolve():
+  if (!rank) return Promise.resolve();
   const db = admin.database();
   const dataRef = db.ref(type);
   const data = {
