@@ -17,26 +17,24 @@ const gd = gd3.node();
 
 const db = firebase.database();
 
-db.ref('ranks')
+db.ref('/')
   .once('value')
   .then(snap => {
     graphStuff(snap.val());
   });
 
-function graphStuff(data) {
-  console.log('data: ', data);
+function makeTrace(name, color, data) {
   const x = [];
   const y = [];
   Object.keys(data).forEach(time => {
     x.push(new Date(time * 1000));
     y.push(data[time].rank);
   });
-  console.log('x: ', x);
-  Plotly.plot(gd, [{
-    type: 'scatter',
-    x,
-    y,
-  }], {
+  return { type: 'scatter', x, y, };
+}
+
+function graphStuff({ ranks = [], support = [], core = [] }) {
+  Plotly.plot(gd, [makeTrace(ranks), makeTrace(support), makeTrace(core)], {
     title: 'Nukeydog\'s Rank (wow!)',
     font: {
       size: 16
