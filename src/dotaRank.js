@@ -8,15 +8,26 @@ admin.initializeApp({
 });
 
 exports.run = () => {
-  const leaderboards = axios.create({
-    baseURL: 'http://www.dota2.com/webapi/ILeaderboard/GetDivisionLeaderboard/v0001?division=americas',
+  const core = axios.create({
+    baseURL: 'http://www.dota2.com/webapi/ILeaderboard/GetDivisionLeaderboard/v0001?division=americas&leaderboard=1',
     timeout: 1000,
     headers: {}
   });
-  return leaderboards.get()
-    .then(res => res.data)
-    .then(getRank)
-    .then(postRank);
+  const support = axios.create({
+    baseURL: 'http://www.dota2.com/webapi/ILeaderboard/GetDivisionLeaderboard/v0001?division=americas&leaderboard=2',
+    timeout: 1000,
+    headers: {}
+  });
+  return Promise.all([
+    core.get()
+      .then(res => res.data)
+      .then(getRank)
+      .then(postRank('core')),
+    support.get()
+      .then(res => res.data)
+      .then(getRank)
+      .then(postRank('support')),
+  ]);
 }
 
 function getRank({ leaderboard, time_posted }) {
@@ -33,9 +44,9 @@ function getRank({ leaderboard, time_posted }) {
   return { rank: me.rank, time: time_posted };
 }
 
-function postRank({ rank, time }) {
+const postRank = (type) => ({ rank, time }) => {
   const db = admin.database();
-  const dataRef = db.ref('ranks');
+  const dataRef = db.ref(type);
   const data = {
     time: new Date(time * 1000),
     rank,
