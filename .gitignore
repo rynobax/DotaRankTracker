@@ -60,3 +60,4 @@ typings/
 credentials
 package-lock.json
 *.zip
+src/secret.js
